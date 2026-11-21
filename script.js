@@ -2,6 +2,14 @@
   const config = window.JOES_80TH_CONFIG || {};
   const apiBase = "https://joes80th-rsvp.swim-times.workers.dev";
 
+  if (window.location.search) {
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.hash,
+    );
+  }
+
   document.querySelectorAll("[data-config]").forEach((element) => {
     const key = element.dataset.config;
 
