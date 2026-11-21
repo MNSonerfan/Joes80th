@@ -152,6 +152,14 @@ a:focus-visible {
   font-size: 1.2rem;
 }
 
+.celebration-notes {
+  margin: 2rem auto 0;
+  padding-top: 1.5rem;
+  max-width: 30rem;
+  border-top: 1px solid #d7cfb7;
+  color: var(--forest);
+}
+
 .message h2,
 .information h2 {
   color: var(--forest);
