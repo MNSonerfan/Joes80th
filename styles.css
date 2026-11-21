@@ -201,6 +201,187 @@ a:focus-visible {
   font-size: 0.92rem;
 }
 
+.guest-list {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 5rem;
+  text-align: center;
+}
+
+.guest-list h2 {
+  color: var(--forest);
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  font-weight: 400;
+}
+
+.guest-list-status {
+  min-height: 1.5rem;
+  color: #666b64;
+}
+
+.response-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.response-columns article {
+  min-height: 10rem;
+  padding: 1.25rem;
+  border: 1px solid #d7cfb7;
+  border-radius: 14px;
+  background: rgba(255, 254, 249, 0.72);
+}
+
+.response-columns h3 {
+  margin-top: 0;
+  color: var(--forest);
+}
+
+.response-columns ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.response-columns li {
+  padding: 0.65rem 0;
+  border-top: 1px solid #ece6d4;
+}
+
+.response-columns li:first-child {
+  border-top: 0;
+}
+
+.guest-comment {
+  display: block;
+  margin-top: 0.15rem;
+  color: #666b64;
+  font-size: 0.9rem;
+}
+
+dialog {
+  width: min(34rem, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  color: var(--ink);
+  background: var(--white);
+  box-shadow: 0 24px 70px rgba(20, 48, 40, 0.28);
+}
+
+dialog::backdrop {
+  background: rgba(23, 58, 50, 0.62);
+  backdrop-filter: blur(3px);
+}
+
+#rsvp-form {
+  padding: 1.5rem;
+}
+
+.dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.dialog-heading h2 {
+  margin: 0.15rem 0 0;
+  color: var(--forest);
+  font-size: 2.25rem;
+}
+
+.close-button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #d7cfb7;
+  border-radius: 50%;
+  color: var(--forest);
+  background: transparent;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
+#rsvp-form label:not(.radio-option),
+#rsvp-form legend {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--forest);
+  font-family: Arial, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+#rsvp-form input[type="text"],
+#rsvp-form input:not([type]),
+#rsvp-name,
+#rsvp-comment {
+  width: 100%;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid #c9c6b6;
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fff;
+  font: 1rem Georgia, "Times New Roman", serif;
+}
+
+#rsvp-name {
+  margin-bottom: 1.25rem;
+}
+
+#rsvp-comment {
+  resize: vertical;
+}
+
+#rsvp-form fieldset {
+  margin: 0 0 1.25rem;
+  padding: 0;
+  border: 0;
+}
+
+.radio-option {
+  display: flex !important;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  margin: 0.35rem 0 0 !important;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d7cfb7;
+  border-radius: 8px;
+  font-weight: 400 !important;
+  cursor: pointer;
+}
+
+.radio-option input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--forest);
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-status {
+  min-height: 1.5rem;
+  margin: 0.8rem 0 0.25rem;
+  color: #963f3a;
+}
+
+.submit-rsvp {
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+}
+
 footer {
   padding: 1.5rem 1.25rem;
   text-align: center;
@@ -222,6 +403,10 @@ footer {
   .details p + p {
     padding-top: 0.75rem;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .response-columns {
+    grid-template-columns: 1fr;
   }
 }
 

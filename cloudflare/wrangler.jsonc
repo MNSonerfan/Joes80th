@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "joes80th-rsvp",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-16",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "joes80th-rsvp",
+      "database_id": "1eb07c05-a80b-41e3-a643-eccdaff629c5",
+      "migrations_dir": "./migrations"
+    }
+  ]
+}

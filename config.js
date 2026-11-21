@@ -3,5 +3,5 @@ window.JOES_80TH_CONFIG = {
   time: "Open House, 2-5 PM",
   phoneDisplay: "[Google Voice number]",
   phoneLink: "",
-  rsvpUrl: ""
+  rsvpUrl: "https://joes80th-rsvp.swim-times.workers.dev"
 };
