@@ -53,6 +53,29 @@ main {
   box-shadow: 0 0 0 8px rgba(214, 180, 107, 0.08);
 }
 
+.hero-portraits {
+  width: min(30rem, 100%);
+  margin: 0 auto 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.hero-portraits .celebration-mark {
+  flex: 0 0 7.25rem;
+  margin: 0;
+}
+
+.hero-photo {
+  width: 7.25rem;
+  height: 7.25rem;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(214, 180, 107, 0.08);
+}
+
 .eyebrow,
 .detail-label {
   text-transform: uppercase;
@@ -409,6 +432,22 @@ footer {
 @media (max-width: 600px) {
   .hero {
     min-height: auto;
+  }
+
+  .hero-portraits {
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .hero-portraits .celebration-mark,
+  .hero-photo {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+
+  .hero-portraits .celebration-mark {
+    flex-basis: 5.5rem;
+    font-size: 2.5rem;
   }
 
   .details {
