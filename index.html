@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#173a32" />
+    <title>Joe's 80th Birthday</title>
+    <meta
+      name="description"
+      content="Please join us for Joe's 80th birthday celebration in Lakeville, Minnesota."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero" aria-labelledby="event-title">
+        <div class="celebration-mark" aria-hidden="true">80</div>
+        <p class="eyebrow">A special celebration</p>
+        <h1 id="event-title">Joe's 80th Birthday</h1>
+
+        <div class="details" aria-label="Event details">
+          <p>
+            <span class="detail-label">Date</span>
+            <strong data-config="date">[Date to come]</strong>
+          </p>
+          <p>
+            <span class="detail-label">Time</span>
+            <strong data-config="time">[Time to come]</strong>
+          </p>
+          <p>
+            <span class="detail-label">Location</span>
+            <strong>Lakeville, Minnesota</strong>
+          </p>
+        </div>
+
+        <a class="rsvp-button" data-config="rsvp" href="#rsvp">
+          RSVP
+        </a>
+      </section>
+
+      <section class="message" aria-labelledby="welcome-title">
+        <h2 id="welcome-title">Please join us</h2>
+        <p>
+          Family and friends are invited to celebrate Joe and an incredible 80
+          years.
+        </p>
+      </section>
+
+      <section class="information" id="rsvp" aria-labelledby="rsvp-title">
+        <h2 id="rsvp-title">Kindly respond</h2>
+        <p>
+          Please let us know whether you can attend. The RSVP form will also
+          include room for guest names and an optional accessibility or meal
+          note.
+        </p>
+        <a class="rsvp-button secondary" data-config="rsvp" href="#rsvp">
+          Open RSVP form
+        </a>
+
+        <div class="contact">
+          <h3>Need directions or more information?</h3>
+          <p>
+            Call or text
+            <a data-config="phone" href="#" aria-label="Call or text the event host">
+              [Google Voice number]
+            </a>.
+          </p>
+          <p class="privacy-note">
+            The full address is shared privately with guests.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Celebrating 80 wonderful years</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
