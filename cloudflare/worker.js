@@ -41,7 +41,7 @@ export default {
 
     if (url.pathname === "/api/rsvps" && request.method === "GET") {
       const rows = await env.DB.prepare(
-        "SELECT id, name, attending, comment, updated_at FROM rsvps ORDER BY name COLLATE NOCASE"
+        "SELECT id, name, attending, attendee_count, comment, updated_at FROM rsvps ORDER BY name COLLATE NOCASE"
       ).all();
       return json({ rsvps: rows.results || [] }, 200, origin);
     }
@@ -65,6 +65,9 @@ export default {
       const name = cleanText(payload.name, 80);
       const comment = cleanText(payload.comment, 500);
       const attending = payload.attending === true || payload.attending === "yes";
+      const attendeeCount = attending
+        ? Math.min(20, Math.max(1, Number.parseInt(payload.attendeeCount, 10) || 1))
+        : 0;
 
       if (name.length < 2) {
         return json({ error: "Please enter your name." }, 400, origin);
@@ -78,17 +81,18 @@ export default {
 
       const now = Math.floor(Date.now() / 1000);
       await env.DB.prepare(
-        `INSERT INTO rsvps (id, name, name_key, attending, comment, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)
+        `INSERT INTO rsvps (id, name, name_key, attending, attendee_count, comment, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(name_key) DO UPDATE SET
            name = excluded.name,
            attending = excluded.attending,
+           attendee_count = excluded.attendee_count,
            comment = excluded.comment,
            updated_at = excluded.updated_at`
-      ).bind(randomId(), name, nameKey, attending ? 1 : 0, comment, now, now).run();
+      ).bind(randomId(), name, nameKey, attending ? 1 : 0, attendeeCount, comment, now, now).run();
 
       const rows = await env.DB.prepare(
-        "SELECT id, name, attending, comment, updated_at FROM rsvps ORDER BY name COLLATE NOCASE"
+        "SELECT id, name, attending, attendee_count, comment, updated_at FROM rsvps ORDER BY name COLLATE NOCASE"
       ).all();
       return json({ ok: true, rsvps: rows.results || [] }, 200, origin);
     }

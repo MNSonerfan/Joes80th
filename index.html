@@ -9,7 +9,7 @@
       name="description"
       content="Please join us for Joe's 80th birthday celebration in Lakeville, Minnesota."
     />
-    <link rel="stylesheet" href="styles.css?v=20261220-notes" />
+    <link rel="stylesheet" href="styles.css?v=20261220-attendees" />
   </head>
   <body>
     <main>
@@ -118,6 +118,21 @@
           </label>
         </fieldset>
 
+        <div id="attendee-count-wrap">
+          <label for="rsvp-attendee-count">How many attendees?</label>
+          <input
+            id="rsvp-attendee-count"
+            name="attendeeCount"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="20"
+            value="1"
+            required
+          >
+          <p class="field-help">Include yourself and any guests.</p>
+        </div>
+
         <label for="rsvp-comment">Comments</label>
         <textarea id="rsvp-comment" name="comment" rows="4" maxlength="500" placeholder="Optional"></textarea>
 
@@ -135,7 +150,7 @@
       <p>Celebrating 80 wonderful years</p>
     </footer>
 
-    <script src="config.js?v=20261220-notes"></script>
-    <script src="script.js?v=20261220-notes"></script>
+    <script src="config.js?v=20261220-attendees"></script>
+    <script src="script.js?v=20261220-attendees"></script>
   </body>
 </html>

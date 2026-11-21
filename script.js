@@ -37,6 +37,8 @@
   const listStatus = document.getElementById("guest-list-status");
   const attendingList = document.getElementById("attending-list");
   const notAttendingList = document.getElementById("not-attending-list");
+  const attendeeCountWrap = document.getElementById("attendee-count-wrap");
+  const attendeeCountInput = document.getElementById("rsvp-attendee-count");
 
   function renderRsvps(rsvps) {
     attendingList.innerHTML = "";
@@ -55,11 +57,21 @@
         item.appendChild(comment);
       }
 
+      if (rsvp.attending && Number(rsvp.attendee_count) > 1) {
+        const count = document.createElement("span");
+        count.className = "guest-comment";
+        count.textContent = `${rsvp.attendee_count} attendees`;
+        item.appendChild(count);
+      }
+
       (rsvp.attending ? attendingList : notAttendingList).appendChild(item);
     }
 
-    const attendingCount = rsvps.filter((rsvp) => rsvp.attending).length;
-    const notAttendingCount = rsvps.length - attendingCount;
+    const attendingCount = rsvps
+      .filter((rsvp) => rsvp.attending)
+      .reduce((total, rsvp) => total + (Number(rsvp.attendee_count) || 1), 0);
+    const attendingResponses = rsvps.filter((rsvp) => rsvp.attending).length;
+    const notAttendingCount = rsvps.length - attendingResponses;
     listStatus.textContent =
       `${attendingCount} attending · ${notAttendingCount} not attending`;
   }
@@ -97,6 +109,14 @@
     if (event.target === dialog) dialog.close();
   });
 
+  form.querySelectorAll('input[name="attending"]').forEach((radio) => {
+    radio.addEventListener("change", () => {
+      const isAttending = radio.value === "yes" && radio.checked;
+      attendeeCountWrap.hidden = !isAttending;
+      attendeeCountInput.required = isAttending;
+    });
+  });
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     status.textContent = "";
@@ -111,6 +131,7 @@
     const payload = {
       name: formData.get("name"),
       attending: formData.get("attending") === "yes",
+      attendeeCount: formData.get("attendeeCount"),
       comment: formData.get("comment"),
       website: formData.get("website"),
     };
