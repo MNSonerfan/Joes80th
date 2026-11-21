@@ -54,22 +54,24 @@ main {
 }
 
 .hero-portraits {
-  width: min(36rem, 100%);
+  width: min(52rem, 100%);
   margin: 0 auto 0.75rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
+  justify-content: space-between;
+  gap: 1.5rem;
 }
 
 .hero-portraits .celebration-mark {
-  flex: 0 0 9rem;
+  flex: 0 0 7.25rem;
+  width: 7.25rem;
+  height: 7.25rem;
   margin: 0;
 }
 
 .hero-photo {
-  width: 9rem;
-  height: 9rem;
+  width: 11.5rem;
+  height: 11.5rem;
   object-fit: cover;
   border: 2px solid var(--gold);
   border-radius: 50%;
@@ -435,7 +437,7 @@ footer {
   }
 
   .hero-portraits {
-    width: 100%;
+    width: min(22rem, 100%);
     gap: 0.5rem;
   }
 
