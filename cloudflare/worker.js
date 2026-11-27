@@ -10,7 +10,7 @@ function corsHeaders(origin) {
     headers.set("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
   }
   headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
   return headers;
 }
 
@@ -30,6 +30,60 @@ function cleanText(value, maxLength) {
   return String(value || "").replace(/\u0000/g, "").trim().slice(0, maxLength);
 }
 
+function matchesBackupToken(provided, expected) {
+  const providedBytes = encoder.encode(provided);
+  const expectedBytes = encoder.encode(expected);
+  let mismatch = providedBytes.length ^ expectedBytes.length;
+  const length = Math.max(providedBytes.length, expectedBytes.length);
+  for (let index = 0; index < length; index += 1) {
+    mismatch |= (providedBytes[index] || 0) ^ (expectedBytes[index] || 0);
+  }
+  return mismatch === 0;
+}
+
+function sqlString(value) {
+  return `'${String(value ?? "").replaceAll("'", "''")}'`;
+}
+
+function sqlInteger(value) {
+  const integer = Number(value);
+  if (!Number.isSafeInteger(integer)) {
+    throw new Error("The RSVP database contains an invalid integer value.");
+  }
+  return String(integer);
+}
+
+export function buildRsvpBackupSql(rows, exportedAt = new Date()) {
+  const lines = [
+    `-- Joe's 80th RSVP backup created ${exportedAt.toISOString()}`,
+    "-- Restore only to the intended RSVP database; this script replaces all RSVP rows.",
+    "DELETE FROM rsvps;",
+  ];
+
+  for (const row of rows) {
+    const attending = Number(row.attending);
+    if (attending !== 0 && attending !== 1) {
+      throw new Error("The RSVP database contains an invalid attendance value.");
+    }
+    lines.push(
+      "INSERT INTO rsvps (id, name, name_key, attending, attendee_count, comment, created_at, updated_at) VALUES ("
+      + [
+        sqlString(row.id),
+        sqlString(row.name),
+        sqlString(row.name_key),
+        String(attending),
+        sqlInteger(row.attendee_count),
+        sqlString(row.comment),
+        sqlInteger(row.created_at),
+        sqlInteger(row.updated_at),
+      ].join(", ")
+      + ");",
+    );
+  }
+
+  return `${lines.join("\n")}\n`;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -37,6 +91,35 @@ export default {
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
+    }
+
+    if (url.pathname === "/api/admin/rsvp-backup" && request.method === "GET") {
+      if (origin && origin !== ALLOWED_ORIGIN) {
+        return json({ error: "Request origin was rejected." }, 403, origin);
+      }
+
+      const expectedToken = String(env.RSVP_BACKUP_TOKEN || "");
+      if (expectedToken.length < 32) {
+        return json({ error: "Host backup access is not configured." }, 503, origin);
+      }
+
+      const authorization = request.headers.get("Authorization") || "";
+      const tokenMatch = authorization.match(/^Bearer\s+(.+)$/i);
+      if (!tokenMatch || !matchesBackupToken(tokenMatch[1], expectedToken)) {
+        return json({ error: "The host backup key was not accepted." }, 401, origin);
+      }
+
+      const result = await env.DB.prepare(
+        "SELECT id, name, name_key, attending, attendee_count, comment, created_at, updated_at FROM rsvps ORDER BY name COLLATE NOCASE"
+      ).all();
+      const backup = buildRsvpBackupSql(result.results || []);
+      const headers = corsHeaders(origin);
+      headers.set("Content-Type", "application/sql; charset=utf-8");
+      headers.set(
+        "Content-Disposition",
+        `attachment; filename="joes80th-rsvp-backup-${new Date().toISOString().slice(0, 10)}.sql"`,
+      );
+      return new Response(backup, { status: 200, headers });
     }
 
     if (url.pathname === "/api/rsvps" && request.method === "GET") {

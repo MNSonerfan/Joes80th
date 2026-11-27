@@ -431,6 +431,49 @@ footer {
   letter-spacing: 0.08em;
 }
 
+.host-backup {
+  max-width: 34rem;
+  margin: 1rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(248, 244, 232, 0.25);
+  letter-spacing: normal;
+}
+
+.host-backup h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.host-backup p {
+  margin: 0.5rem 0;
+}
+
+.host-backup button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--forest);
+  background: var(--gold);
+  font: 700 0.9rem Arial, sans-serif;
+  cursor: pointer;
+}
+
+.host-backup button:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 3px;
+}
+
+.host-backup button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+#backup-status {
+  min-height: 1.5rem;
+  font-size: 0.88rem;
+}
+
 @media (max-width: 600px) {
   .hero {
     min-height: auto;

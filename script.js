@@ -47,6 +47,13 @@
   const notAttendingList = document.getElementById("not-attending-list");
   const attendeeCountWrap = document.getElementById("attendee-count-wrap");
   const attendeeCountInput = document.getElementById("rsvp-attendee-count");
+  const hostBackup = document.getElementById("host-backup");
+  const backupButton = document.getElementById("download-rsvp-backup");
+  const backupStatus = document.getElementById("backup-status");
+
+  if (window.location.hash === "#host") {
+    hostBackup.hidden = false;
+  }
 
   function renderRsvps(rsvps) {
     attendingList.innerHTML = "";
@@ -111,6 +118,47 @@
 
   document.getElementById("close-rsvp").addEventListener("click", () => {
     dialog.close();
+  });
+
+  backupButton.addEventListener("click", async () => {
+    let token = window.prompt("Enter the host backup key configured for this site.");
+    if (token === null) return;
+    if (!token) {
+      backupStatus.textContent = "Enter the host backup key to continue.";
+      return;
+    }
+
+    backupButton.disabled = true;
+    backupStatus.textContent = "Preparing the RSVP backup...";
+    try {
+      const response = await fetch(`${apiBase}/api/admin/rsvp-backup`, {
+        headers: {
+          Accept: "application/sql",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || `Backup request failed (${response.status}).`);
+      }
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = `joes80th-rsvp-backup-${new Date().toISOString().slice(0, 10)}.sql`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+      backupStatus.textContent =
+        "Backup downloaded. Keep it private; restoring it replaces the RSVP list.";
+    } catch (error) {
+      backupStatus.textContent = error.message;
+    } finally {
+      token = "";
+      backupButton.disabled = false;
+    }
   });
 
   dialog.addEventListener("click", (event) => {
